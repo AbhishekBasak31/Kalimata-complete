@@ -1,0 +1,238 @@
+import { useState, useEffect } from "react";
+import { Settings, Wrench, FileStack, Hammer, Factory, Building2, Award, Cog } from "lucide-react";
+
+import metalCastingImg from "@/assets/metal-casting.jpg";
+import patternMakingImg from "@/assets/pattern-making.jpg";
+import foundryImg from "@/assets/foundry.jpg";
+import industrialImg from "@/assets/industrial.jpg";
+import heatTreatmentImg from "@/assets/heat-treatment.jpg";
+import qualityControlImg from "@/assets/quality-control.jpg";
+import machiningImg from "@/assets/machining.jpg";
+
+const timelineData = [
+  {
+    year: "1987",
+    title: "Kalimata Ispat Industries Pvt Ltd - Unit I",
+    description: "Started Manufacturing Elastic Railway Clips for Indian Railways",
+    icon: <Settings className="w-6 h-6" />,
+    image: metalCastingImg,
+  },
+  {
+    year: "2008",
+    title: "Expansion of Operations",
+    description: "Established a new manufacturing facility",
+    icon: <Wrench className="w-6 h-6" />,
+    image: qualityControlImg,
+  },
+  {
+    year: "2010",
+    title: "Global Reach",
+    description: "Started exporting products to international markets",
+    icon: <FileStack className="w-6 h-6" />,
+    image: patternMakingImg,
+  },
+  {
+    year: "2017",
+    title: "High Tensile Product Developed",
+    description: "Developed Austempered Ductile Iron used in Indian Railways shock absorbers",
+    icon: <Hammer className="w-6 h-6" />,
+    image: foundryImg,
+  },
+  {
+    year: "2018",
+    title: "Annual Production Capacity Revamped",
+    description: "Revamped annual production capacity from 8000 to 12000 Tons",
+    icon: <Factory className="w-6 h-6" />,
+    image: industrialImg,
+  },
+  {
+    year: "2019",
+    title: "Manufacturing Expansion",
+    description: "Expanded to 13200 Tons including SGCI inserts, Manhole Frames, Pipe Fittings",
+    icon: <Building2 className="w-6 h-6" />,
+    image: heatTreatmentImg,
+  },
+  {
+    year: "2020",
+    title: "Increased Production Capacity",
+    description: "Scaled up production from 60L pcs/year to 1.2Cr pcs/year (16000 Tons)",
+    icon: <Factory className="w-6 h-6" />,
+    image: machiningImg,
+  },
+  {
+    year: "2024",
+    title: "Future Expansion & Innovation",
+    description: "Focusing on sustainable, smart casting and advanced manufacturing technologies",
+    icon: <Award className="w-6 h-6" />,
+    image: qualityControlImg,
+  },
+];
+
+export default function TimelineSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % timelineData.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="relative w-full bg-[#0b1d3a] text-white overflow-hidden py-16 px-4">
+      {/* --- Decorative Animated Background --- */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Gradient overlays */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0b1d3a] via-[#0b1d3a]/80 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0b1d3a] via-[#0b1d3a]/80 to-transparent"></div>
+
+        {/* --- Abstract glowing shapes --- */}
+        <div className="absolute top-[20%] left-[10%] w-[300px] h-[300px] bg-gradient-to-br from-blue-500/20 via-primary/10 to-transparent rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-[15%] right-[15%] w-[400px] h-[400px] bg-gradient-to-tl from-primary/20 via-blue-500/10 to-transparent rounded-full blur-3xl animate-float-slow" />
+        <div className="absolute top-[45%] right-[30%] w-[250px] h-[250px] bg-gradient-to-tr from-blue-300/10 to-transparent rounded-full blur-2xl animate-float-reverse" />
+
+        {/* --- Soft "clouds" --- */}
+        <div className="absolute top-[25%] left-[5%] w-[250px] h-[120px] bg-white/5 rounded-full blur-2xl animate-cloud" />
+        <div className="absolute top-[40%] left-[25%] w-[300px] h-[130px] bg-blue-300/10 rounded-full blur-3xl animate-cloud-delayed" />
+        <div className="absolute bottom-[20%] right-[10%] w-[280px] h-[140px] bg-white/5 rounded-full blur-3xl animate-cloud-reverse" />
+
+        {/* --- Rotating gears --- */}
+        <Cog className="absolute top-[15%] left-[3%] w-24 h-24 text-primary/10 animate-spin-slow" />
+        <Cog className="absolute top-[40%] left-[6%] w-32 h-32 text-blue-400/10 animate-spin-slow-reverse" />
+        <Cog className="absolute bottom-[10%] left-[10%] w-20 h-20 text-white/10 animate-spin-slow" />
+        <Cog className="absolute bottom-[25%] left-[0%] w-28 h-28 text-primary/10 animate-spin-slow-reverse" />
+        <Cog className="absolute top-[5%] right-[6%] w-24 h-24 text-primary/10 animate-spin-slow" />
+        <Cog className="absolute top-[12%] right-[12%] w-16 h-16 text-blue-300/10 animate-spin-slow-reverse" />
+        <Cog className="absolute top-[30%] right-[25%] w-16 h-16 text-white/5 animate-spin-slow" />
+        <Cog className="absolute bottom-[15%] right-[10%] w-32 h-32 text-blue-400/10 animate-spin-slow-reverse" />
+
+        {/* Floating spark dots */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-white/30 rounded-full animate-float"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 6}s`,
+              animationDuration: `${4 + Math.random() * 6}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* --- Header --- */}
+      <div className="text-center mb-14 relative z-10">
+        <h2 className="text-primary text-3xl md:text-4xl font-bold mb-1">WE HAVE COME</h2>
+        <h1 className="text-white text-4xl md:text-6xl font-bold mb-3">A LONG WAY</h1>
+        <p className="text-gray-300 text-sm md:text-base max-w-3xl mx-auto leading-relaxed">
+          AFTER TRAVERSING A LONG AND WINDING ROAD<br />
+          VULCAN NOW BOASTS OF ITSELF AS THE LEADING PLAYER<br />
+          IN THE CASTING SEGMENT WITH A VISIBLE PAN INDIA REACH
+        </p>
+      </div>
+
+      {/* --- Timeline --- */}
+      <div className="max-w-7xl mx-auto relative overflow-visible z-10">
+        <div className="flex justify-between items-end mb-8 relative w-full" style={{ minHeight: "420px" }}>
+          {timelineData.map((item, index) => {
+            const isActive = index === activeIndex;
+            const height = 70 + index * 22;
+
+            return (
+              <div
+                key={item.year}
+                className="flex flex-col items-center relative transition-all duration-500"
+                style={{ flex: 1, minWidth: "120px" }}
+              >
+                {/* Image */}
+                <div className="h-[180px] mb-3 flex items-center justify-center relative">
+                  {isActive && (
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-44 h-32 object-cover rounded-xl shadow-lg border border-primary/60 transition-all duration-700"
+                    />
+                  )}
+                </div>
+
+                {/* Text */}
+                <div className="text-center mb-2">
+                  <h3
+                    className={`font-semibold text-[12px] mb-1 transition-colors duration-500 ${
+                      isActive ? "text-primary" : "text-gray-300"
+                    }`}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className="text-[10px] text-gray-400 leading-snug max-w-[180px] mx-auto">
+                    {item.description}
+                  </p>
+                </div>
+
+                {/* Line */}
+                <div className="relative flex flex-col items-center mt-2">
+                  <div
+                    className="w-[2px] bg-gradient-to-b from-primary/80 to-primary/10 transition-all duration-500"
+                    style={{ height: `${height}px` }}
+                  />
+                  <div
+                    className={`w-3 h-3 rounded-full my-2 transition-all duration-500 ${
+                      isActive ? "bg-primary scale-110" : "bg-gray-500"
+                    }`}
+                  />
+                </div>
+
+                {/* Year */}
+                <div
+                  className={`text-lg md:text-2xl font-bold transition-all duration-500 ${
+                    isActive ? "text-primary scale-110" : "text-gray-400"
+                  }`}
+                >
+                  {item.year}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* --- Progress Bar + Icons --- */}
+        <div className="relative mt-6 overflow-visible">
+          <div className="absolute top-0 left-0 right-0 h-[4px] bg-white/20 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-primary transition-all duration-700 ease-linear"
+              style={{
+                width: `${((activeIndex + 1) / timelineData.length) * 100}%`,
+              }}
+            />
+          </div>
+
+          <div className="flex justify-between items-center pt-8 relative w-full">
+            {timelineData.map((item, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <button
+                  key={`icon-${item.year}`}
+                  onClick={() => setActiveIndex(index)}
+                  className={`flex items-center justify-center w-12 h-12 rounded-full border-4 transition-all duration-500 focus:outline-none ${
+                    isActive
+                      ? "border-primary bg-white/10 scale-110 shadow-md shadow-primary/30"
+                      : "border-white/20 bg-white/5 hover:scale-105"
+                  }`}
+                >
+                  <div
+                    className={`transition-colors duration-500 ${
+                      isActive ? "text-primary" : "text-gray-400"
+                    }`}
+                  >
+                    {item.icon}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

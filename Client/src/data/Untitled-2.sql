@@ -1,0 +1,511 @@
+
+Name - CDMJB1104 4" X 11.25° 
+Description - COMPACT MJ BEND
+Name - CDMJB1104B 4" X 11.25° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB1104E 4" X 11.25° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB1106 6" X 11.25° 
+Description - COMPACT MJ BEND
+Name - CDMJB1106B 6" X 11.25° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB1106E 6" X 11.25° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB1108 8" X 11.25° 
+Description - COMPACT MJ BEND
+Name - CDMJB1108B 8" X 11.25° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB1108E 8" X 11.25° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB2204 4" X 22.5° 
+Description - COMPACT MJ BEND
+Name - CDMJB2204B 4" X 22.5° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB2204E 4" X 22.5° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB2206 6" X 22.5° 
+Description - COMPACT MJ BEND
+Name - CDMJB2206B 6" X 22.5° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB2206E 6" X 22.5° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB2208 8" X 22.5° 
+Description - COMPACT MJ BEND
+Name - CDMJB2208B 8" X 22.5° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB2208E 8" X 22.5° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB4503 3" X 45° 
+Description - COMPACT MJ BEND
+Name - CDMJB4503B 3" X 45° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB4503E 3" X 45° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB4504 4" X 45° 
+Description - COMPACT MJ BEND
+Name - CDMJB4504B 4" X 45° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB4504E 4" X 45° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB4506 6" X 45° 
+Description - COMPACT MJ BEND
+Name - CDMJB4506B 6" X 45° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB4506E 6" X 45° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB4508 8" X 45° 
+Description - COMPACT MJ BEND
+Name - CDMJB4508B 8" X 45° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB4508E 8" X 45° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB4510 10" X 45° 
+Description - COMPACT MJ BEND
+Name - CDMJB4510B 10" X 45° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB4510E 10" X 45° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB9002 2" X 90° 
+Description - COMPACT MJ BEND
+Name - CDMJB9002B 2" X 90° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB9002E 2" X 90° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB9003 3"X90° 
+Description - COMPACT MJ BEND
+Name - CDMJB9003B 3"X90° 
+Description - COMPACT MJ BEND; BARE
+Name - CDMJB9003E 3"X90° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB9004 4" X 90° 
+Description - COMPACT MJ BEND
+Name - CDMJB9004B 4" X 90° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB9004E 4" X 90° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB9006 6" X 90° 
+Description - COMPACT MJ BEND
+Name - CDMJB9006B 6" X 90° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB9006E 6" X 90° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJB9008 8" X 90° 
+Description - COMPACT MJ BEND
+Name - CDMJB9008B 8" X 90° 
+Description - COMPACT MJ BEND BARE
+Name - CDMJB9008E 8" X 90° 
+Description - COMPACT MJ BEND FBE
+Name - CDMJC02 2" 
+Description - COMAPCT MJ CAP
+Name - CDMJC02B 2" 
+Description - COMAPCT MJ CAP BARE
+Name - CDMJC02E 2" 
+Description - COMAPCT MJ CAP FBE
+Name - CDMJC03 3" 
+Description - COMAPCT MJ CAP
+Name - CDMJC03B 3" 
+Description - COMAPCT MJ CAP BARE
+Name - CDMJC03E 3" 
+Description - COMAPCT MJ CAP FBE
+Name - CDMJC04 4" 
+Description - COMPACT MJ CAP SOLID
+Name - CDMJC04B 4" 
+Description - COMAPCT MJ CAP BARE
+Name - CDMJC04E 4" 
+Description - COMAPCT MJ CAP FBE
+Name - CDMJC06 6" 
+Description - COMAPCT MJ CAP
+Name - CDMJC06B 6" 
+Description - COMAPCT MJ CAP BARE
+Name - CDMJC06E 6" 
+Description - COMAPCT MJ CAP EBE
+Name - CDMJC08 8" 
+Description - COMAPCT MJ CAP
+Name - CDMJC08B 8" 
+Description - COMAPCT MJ CAP BARE
+Name - CDMJC08E 8" 
+Description - COMAPCT MJ CAP FBE
+Name - CDMJC10 10" 
+Description - COMAPCT MJ CAP
+Name - CDMJC10B 10" 
+Description - COMAPCT MJ CAP BARE
+Name - CDMJC10E 10" 
+Description - COMAPCT MJ CAP FBE
+Name - CDMJC12 12" 
+Description - COMAPCT MJ CAP
+Name - CDMJC12B 12" 
+Description - COMAPCT MJ CAP BARE
+Name - CDMJC12E 12" 
+Description - COMAPCT MJ CAP FBE
+Name - CDMJCT02 2" 
+Description - COMAPCT MJ CAP TAPPED
+Name - CDMJCT02B 2" 
+Description - COMAPCT MJ CAP TAPPED BARE
+Name - CDMJCT02E 2" 
+Description - COMAPCT MJ CAP TAPPED FBE
+Name - CDMJCT03 3" 
+Description - COMAPCT MJ CAP TAPPED
+Name - CDMJCT03B 3" 
+Description - COMAPCT MJ CAP TAPPED BARE
+Name - CDMJCT03E 3" 
+Description - COMAPCT MJ CAP TAPPED FBE
+Name - CDMJCT04 4" 
+Description - COMPACT MJ CAP TAPPED
+Name - CDMJCT04B 4" 
+Description - COMAPCT MJ CAP TAPPED BARE
+Name - CDMJCT04E 4" 
+Description - COMAPCT MJ CAP TAPPED FBE
+Name - CDMJCT06 6" 
+Description - COMAPCT MJ CAP TAPPED
+Name - CDMJCT06B 6" 
+Description - COMAPCT MJ CAP TAPPED BARE
+Name - CDMJCT06E 6" 
+Description - COMAPCT MJ CAP TAPPED FBE
+Name - CDMJCT08 8" 
+Description - COMAPCT MJ CAP TAPPED
+Name - CDMJCT08B 8" 
+Description - COMAPCT MJ CAP TAPPED BARE
+Name - CDMJCT08E 8" 
+Description - COMAPCT MJ CAP TAPPED FBE
+Name - CDMJCT10 10" 
+Description - COMAPCT MJ CAP TAPPED
+Name - CDMJCT10B 10" 
+Description - COMAPCT MJ CAP TAPPED BARE
+Name - CDMJCT10E 10" 
+Description - COMAPCT MJ CAP TAPPED FBE
+Name - CDMJCT12 12" 
+Description - COMAPCT MJ CAP TAPPED
+Name - CDMJCT12B 12" 
+Description - COMAPCT MJ CAP TAPPED BARE
+Name - CDMJCT12E 12" 
+Description - COMAPCT MJ CAP TAPPED FBE
+Name - CDMJEZAS14-24 14-24 
+Description - COMPACT MJ EZ GRIP ADAPTER SPACER
+Name - CDMJFA04 4" 
+Description - COMPACT MJ FLANGE ADOPTER
+Name - CDMJFA04B 4" 
+Description - COMPACT MJ FLANGE ADOPTER BARE
+Name - CDMJFA04E 4" 
+Description - COMPACT MJ FLANGE ADOPTER FBE
+Name - CDMJFA06 6" 
+Description - COMPACT MJ FLANGE ADOPTER
+Name - CDMJFA06B 6" 
+Description - COMPACT MJ FLANGE ADOPTER BARE
+Name - CDMJFA06E 6" 
+Description - COMPACT MJ FLANGE ADOPTER FBE
+Name - CDMJFA08 8" 
+Description - COMPACT MJ FLANGE ADOPTER
+Name - DMJFA08 E 8" 
+Description - COMPACT MJ FLANGE ADOPTER FBE
+Name - CDMJFA08B 8" 
+Description - COMPACT MJ FLANGE ADOPTER BARE
+Name - CDMJGS06 6"  
+Description - SWIVEL GALND
+Name - CDMJGS08 8"  
+Description - SWIVEL GALND
+Name - CDMJHA0613 6"X13"  
+Description - MJ HYD ADOPTER
+Name - CDMJHA0613B 6"X13"  
+Description - MJ HYD ADOPTER BARE
+Name - CDMJHA0613E 6"X13"  
+Description - MJ HYD ADOPTER FBE
+Name - CDMJHA0618 6"X18"  
+Description - MJ HYD ADOPTER
+Name - CDMJHA0618B 6"X18"  
+Description - MJ HYD ADOPTER BARE
+Name - CDMJHA0618E 6"X18"  
+Description - MJ HYD ADOPTER FBE
+Name - CDMJHA0624 6"X24"  
+Description - MJ HYD ADOPTER
+Name - CDMJHA0624B 6"X24"  
+Description - MJ HYD ADOPTER BARE
+Name - CDMJHA0624E 6"X24"  
+Description - MJ HYD ADOPTER FBE
+Name - CDMJHA0813 8"X13"  
+Description - MJ HYD ADOPTER
+Name - CDMJHA0813B 8"X13"  
+Description - MJ HYD ADOPTER BARE
+Name - CDMJHA0813E 8"X13"  
+Description - MJ HYD ADOPTER FBE
+Name - CDMJHB9006 6" 
+Description - COMPACT MJ HYDRANT 90° BEND
+Name - CDMJHB9006B 6" 
+Description - COMPACT MJ HYDRANT 90° BEND BARE
+Name - CDMJHB9006E 6" 
+Description - COMPACT MJ HYDRANT 90° BEND FBE
+Name - CDMJHT0606 6"X6"  
+Description - MJ SWIVEL HYD TEE
+Name - CDMJHT0606B 6"X6"  
+Description - MJ SWIVEL HYD TEE BARE
+Name - CDMJHT0606E 6"X6"  
+Description - MJ SWIVEL HYD TEE FBE
+Name - CDMJHT0806 8"X6"  
+Description - MJ SWIVEL HYD TEE
+Name - CDMJHT0806B 8"X6"  
+Description - MJ SWIVEL HYD TEE BARE
+Name - CDMJHT0806E 8"X6"  
+Description - MJ SWIVEL HYD TEE FBE
+Name - CDMJHT0808 8"X 8" 
+Description - COMPACT MJ SWIVEL HYD TEE
+Name - CDMJHT0808B 8"X 8"  
+Description - MJ SWIVEL HYD TEE BARE
+Name - CDMJHT0808E 8"X 8" 
+Description - COMPACT MJ SWIVEL HYD TEE FBE
+Name - CDMJL0606 6"X6" 
+Description - COMAPCT MJ LATRAL
+Name - CDMJL0606B 6"X6" 
+Description - COMAPCT MJ LATRAL BARE
+Name - CDMJL0606E 6"X6" 
+Description - COMAPCT MJ LATRAL FBE
+Name - CDMJL0804 8"X4" 
+Description - COMAPCT MJ LATRAL
+Name - CDMJL0804B 8"X4" 
+Description - COMAPCT MJ LATRAL BARE
+Name - CDMJL0804E 8"X4" 
+Description - COMAPCT MJ LATRAL FBE
+Name - CDMJL0806 8"X6" 
+Description - COMAPCT MJ LATRAL
+Name - CDMJL0806B 8"X6" 
+Description - COMAPCT MJ LATRAL BARE
+Name - CDMJL0806E 8"X6" 
+Description - COMAPCT MJ LATRAL FBE
+Name - CDMJL0808 8"X8" 
+Description - COMAPCT MJ LATRAL
+Name - CDMJL0808B 8"X8" 
+Description - COMAPCT MJ LATRAL BARE
+Name - CDMJL0808E 8"X8" 
+Description - COMAPCT MJ LATRAL FBE
+Name - CDMJLS02 2" 
+Description - COMPACT MJ LONG SLEEVE
+Name - CDMJLS02B 2" 
+Description - COMPACT MJ LONG SLEEVE BARE
+Name - CDMJLS02E 2" 
+Description - COMPACT MJ LONG SLEEVE FBE
+Name - CDMJLS03 3" 
+Description - COMPACT MJ LONG SLEEVE
+Name - CDMJLS03B 3" 
+Description - COMPACT MJ LONG SLEEVE BARE
+Name - CDMJLS03E 3" 
+Description - COMPACT MJ LONG SLEEVE FBE
+Name - CDMJLS04 4" 
+Description - COMPACT MJ LONG SLEEVE
+Name - CDMJLS04B 4" 
+Description - COMPACT MJ LONG SLEEVE BARE
+Name - CDMJLS04E 4" 
+Description - COMPACT MJ LONG SLEEVE FBE
+Name - CDMJLS06 6" 
+Description - COMPACT MJ LONG SLEEVE
+Name - CDMJLS06B 6" 
+Description - COMPACT MJ LONG SLEEVE BARE
+Name - CDMJLS06E 6" 
+Description - COMPACT MJ LONG SLEEVE FBE
+Name - CDMJLS08 8" 
+Description - COMPACT MJ LONG SLEEVE
+Name - CDMJLS08B 8" 
+Description - COMPACT MJ LONG SLEEVE BARE
+Name - CDMJLS08E 8" 
+Description - COMPACT MJ LONG SLEEVE FBE
+Name - CDMJP03 3" 
+Description - COMPACT MJ PLUG
+Name - CDMJP03B 3" 
+Description - COMPACT MJ PLUG BARE
+Name - CDMJP03E 3" 
+Description - COMPACT MJ PLUG FBE
+Name - CDMJP04 4" 
+Description - COMPACT MJ SOLID PLUG
+Name - CDMJP04B 4" 
+Description - COMPACT MJ PLUG BARE
+Name - CDMJP04E 4" 
+Description - COMPACT MJ PLUG FBE
+Name - CDMJP06 6" 
+Description - COMPACT MJ PLUG
+Name - CDMJP06B 6" 
+Description - COMPACT MJ PLUG BARE
+Name - CDMJP06E 6" 
+Description - COMPACT MJ PLUG FBE
+Name - CDMJP08 8" 
+Description - COMPACT MJ PLUG
+Name - CDMJP08B 8" 
+Description - COMPACT MJ PLUG BARE
+Name - CDMJP08E 8" 
+Description - COMPACT MJ PLUG FBE
+Name - CDMJP0T4B 4" 
+Description - COMPACT MJ PLUG Tapped BARE
+Name - CDMJP12 12" 
+Description - COMPACT MJ PLUG
+Name - CDMJP12B 12" 
+Description - COMPACT MJ PLUG BARE
+Name - CDMJP12E 12" 
+Description - COMPACT MJ PLUG FBE
+Name - CDMJPB4504 4" X45°  
+Description - MJ PE BEND
+Name - CDMJPB4504B 4" X45°  
+Description - MJ PE BEND BARE
+Name - CDMJPB4504E 4" X45°  
+Description - MJ PE BEND FBE
+Name - CDMJPB4506 6" X45°  
+Description - MJ PE BEND
+Name - CDMJPB4506B 6" X45°  
+Description - MJ PE BEND BARE
+Name - CDMJPB4506E 6" X45°  
+Description - MJ PE BEND FBE
+Name - CDMJPB4507 8" X45°  
+Description - MJ PE BEND
+Name - CDMJPB4507B 8" X45°  
+Description - MJ PE BEND BARE
+Name - CDMJPB4507E 8" X45°  
+Description - MJ PE BEND FBE
+Name - CDMJPT03 3" 
+Description - COMPACT MJ PLUG Tapped
+Name - CDMJPT03B 3" 
+Description - COMPACT MJ PLUG Tapped BARE
+Name - CDMJPT03E 3" 
+Description - COMPACT MJ PLUG Tapped FBE
+Name - CDMJPT04 4" 
+Description - COMPACT MJ PLUG Tapped
+Name - CDMJPT04E 4" 
+Description - COMPACT MJ PLUG Tapped FBE
+Name - CDMJPT06 6" 
+Description - COMPACT MJ PLUG Tapped
+Name - CDMJPT06B 6" 
+Description - COMPACT MJ PLUG Tapped BARE
+Name - CDMJPT06E 6" 
+Description - COMPACT MJ PLUG Tapped FBE
+Name - CDMJPT08 8" 
+Description - COMPACT MJ PLUG Tapped
+Name - CDMJPT08B 8" 
+Description - COMPACT MJ PLUG Tapped BARE
+Name - CDMJPT08E 8" 
+Description - COMPACT MJ PLUG Tapped FBE
+Name - CDMJPT12 12" 
+Description - COMPACT MJ PLUG Tapped
+Name - CDMJPT12B 12" 
+Description - COMPACT MJ PLUG Tapped BARE
+Name - CDMJPT12E 12" 
+Description - COMPACT MJ PLUG Tapped FBE
+Name - CDMJR0403 4" X 3" 
+Description - COMPACT MJ REDUCER
+Name - CDMJR0403B 4" X 3" 
+Description - COMPACT MJ REDUCER BARE
+Name - CDMJR0403E 4" X 3" 
+Description - COMPACT MJ REDUCER FBE
+Name - CDMJR0604 6" X 4" 
+Description - COMPACT MJ REDUCER
+Name - CDMJR0604B 6" X 4" 
+Description - COMPACT MJ REDUCER BARE
+Name - CDMJR0604E 6" X 4" 
+Description - COMPACT MJ REDUCER FBE
+Name - CDMJR0804 8" X 4" 
+Description - COMPACT MJ REDUCER
+Name - CDMJR0804B 8" X 4" 
+Description - COMPACT MJ REDUCER BARE
+Name - CDMJR0804E 8" X 4" 
+Description - COMPACT MJ REDUCER FBE
+Name - CDMJR0806 8" X 6" 
+Description - COMPACT MJ REDUCER
+Name - CDMJR0806B 8" X 6" 
+Description - COMPACT MJ REDUCER BARE
+Name - CDMJR0806E 8" X 6" 
+Description - COMPACT MJ REDUCER FBE
+Name - CDMJSS06 6" 
+Description - COMPACT MJ SHORT SLEEVE
+Name - CDMJSS06B 6" 
+Description - COMPACT MJ SHORT SLEEVE BARE
+Name - CDMJSS06E 6" 
+Description - COMPACT MJ SHORT SLEEVE FBE
+Name - CDMJT0303 3" X 3" 
+Description - COMPACT MJ TEE
+Name - CDMJT0303B 3" X 3" 
+Description - COMPACT MJ TEE BARE
+Name - CDMJT0303E 3" X 3" 
+Description - COMPACT MJ TEE FBE
+Name - CDMJT0404 4" X 4" 
+Description - COMPACT MJ TEE
+Name - CDMJT0404B 4" X 4" 
+Description - COMPACT MJ TEE BARE
+Name - CDMJT0404E 4" X 4" 
+Description - COMPACT MJ TEE FBE
+Name - CDMJT0604 6" X 4" 
+Description - COMPACT MJ TEE
+Name - CDMJT0604B 6" X 4" 
+Description - COMPACT MJ TEE BARE
+Name - CDMJT0604E 6" X 4" 
+Description - COMPACT MJ TEE FBE
+Name - CDMJT0606 6" X 6" 
+Description - COMPACT MJ TEE
+Name - CDMJT0606B 6" X 6" 
+Description - COMPACT MJ TEE BARE
+Name - CDMJT0606E 6" X 6" 
+Description - COMPACT MJ TEE FBE
+Name - CDMJT0804 8" X 4" 
+Description - COMPACT MJ TEE
+Name - CDMJT0804B 8" X 4" 
+Description - COMPACT MJ TEE BARE
+Name - CDMJT0804E 8" X 4" 
+Description - COMPACT MJ TEE FBE
+Name - CDMJT0806 8" X 6" 
+Description - COMPACT MJ TEE
+Name - CDMJT0806B 8" X 6" 
+Description - COMPACT MJ TEE BARE
+Name - CDMJT0806E 8" X 6" 
+Description - COMPACT MJ TEE FBE
+Name - CDMJT0808 8" X 8" 
+Description - COMPACT MJ TEE
+Name - CDMJT0808B 8" X 8" 
+Description - COMPACT MJ TEE BARE
+Name - CDMJT0808E 8" X 8" 
+Description - COMPACT MJ TEE FBE
+Name - DBF02 2"  
+Description - BLIND FLANGE
+Name - DBF02B 2"  
+Description - BLIND FLANGE BARE
+Name - DBF02E 2"  
+Description - BLIND FLANGE FBE
+Name - DBF03 3"  
+Description - BLIND FLANGE
+Name - DBF03B 3"  
+Description - BLIND FLANGE BARE
+Name - DBF03E 3"  
+Description - BLIND FLANGE FBE
+Name - DBF04 4"  
+Description - BLIND FLANGE
+Name - DBF04B 4"  
+Description - BLIND FLANGE BARE
+Name - DBF04E 4"  
+Description - BLIND FLANGE FBE
+Name - DBF06 6"  
+Description - BLIND FLANGE
+Name - DBF06B 6"  
+Description - BLIND FLANGE BARE
+Name - DBF06E 6"  
+Description - BLIND FLANGE FBE
+Name - DBF08 8"  
+Description - BLIND FLANGE
+Name - DBF08B 8"  
+Description - BLIND FLANGE BARE
+Name - DBF08E 8"  
+Description - BLIND FLANGE FBE
+Name - DBF10 10"  
+Description - BLIND FLANGE
+Name - DBF10B 10"  
+Description - BLIND FLANGE BARE
+Name - DBF10E 10"  
+Description - BLIND FLANGE FBE
+Name - DBF12 12"  
+Description - BLIND FLANGE
+Name - DBF12B 12"  
+Description - BLIND FLANGE BARE
+Name - DBF12E 12"  
+Description - BLIND FLANGE FBE
+Name - DF03A 3"  
+Description - HI HUB 125 LB. THREADED FLANGE (USPD)
+Name - DF04A 4"  
+Description - HI HUB 125 LB. THREADED FLANGE (USPD)
+Name - DF06A 6"  
+Description - HI HUB 125 LB. THREADED FLANGE (USPD)
+Name - DF08A 8"  
+Description - HI HUB 125 LB. THREADED FLANGE (USPD)
+Name - DF10A 10"  
+Description - HI HUB 125 LB. THREADED FLANGE (USPD)
+Name - DF12A 12"  
+Description - HI HUB 125 LB. THREADED FLANGE (USPD)

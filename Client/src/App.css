@@ -1,0 +1,23 @@
+/* Removed #root boilerplate styles that break layout centering */
+/* Removed unused .logo, .card, .read-the-docs classes */
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Keep only if you want animations for future dev playgrounds */
+
+/* 🔥 Utility: Hide scrollbar but keep scroll functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}

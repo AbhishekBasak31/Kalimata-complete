@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Industrial Design System - Kalimata Group inspired colors and styles */
+
+@layer base {
+  :root {
+    /* Industrial Color Palette */
+    --background: 0 0% 100%;
+    --foreground: 30 5% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 30 5% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 5% 15%;
+
+    /* Orange Industrial Primary */
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 24 100% 60%;
+
+    /* Warm Secondary */
+    --secondary: 30 20% 92%;
+    --secondary-foreground: 30 8% 25%;
+
+    /* Industrial Muted */
+    --muted: 30 15% 95%;
+    --muted-foreground: 30 8% 45%;
+
+    /* Warm Accent */
+    --accent: 35 40% 88%;
+    --accent-foreground: 30 8% 25%;
+
+    /* Industrial Steel */
+    --steel: 210 15% 35%;
+    --steel-light: 210 15% 65%;
+    --steel-dark: 210 20% 20%;
+
+    /* Industrial Bronze */
+    --bronze: 30 45% 25%;
+    --bronze-light: 30 35% 45%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 24 95% 53%;
+
+    --radius: 0.75rem;
+
+    /* Industrial Gradients */
+    --gradient-industrial: linear-gradient(135deg, hsl(24 95% 53%), hsl(30 85% 45%));
+    --gradient-metal: linear-gradient(180deg, hsl(210 15% 65%), hsl(210 20% 35%));
+    --gradient-hero: linear-gradient(135deg, hsl(30 45% 25% / 0.9), hsl(24 85% 15% / 0.7));
+
+    /* Industrial Shadows */
+    --shadow-industrial: 0 10px 30px -5px hsl(24 95% 53% / 0.3);
+    --shadow-steel: 0 8px 25px -8px hsl(210 20% 20% / 0.4);
+    --shadow-glow: 0 0 40px hsl(24 100% 60% / 0.6);
+
+    /* Typography */
+    --font-industrial: 'Inter', system-ui, sans-serif;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark Industrial Theme */
+    --background: 30 8% 8%;
+    --foreground: 30 15% 95%;
+
+    --card: 30 12% 12%;
+    --card-foreground: 30 15% 95%;
+
+    --popover: 30 12% 12%;
+    --popover-foreground: 30 15% 95%;
+
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 15% 18%;
+    --secondary-foreground: 30 15% 85%;
+
+    --muted: 30 15% 18%;
+    --muted-foreground: 30 10% 65%;
+
+    --accent: 30 20% 20%;
+    --accent-foreground: 30 15% 85%;
+
+    --steel: 210 15% 25%;
+    --steel-light: 210 15% 55%;
+    --steel-dark: 210 20% 15%;
+
+    --bronze: 30 45% 35%;
+    --bronze-light: 30 35% 55%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 30 15% 95%;
+
+    --border: 30 15% 20%;
+    --input: 30 15% 20%;
+    --ring: 24 95% 53%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Industrial Typography */
+  .heading-industrial {
+    @apply font-bold tracking-tight text-foreground;
+  }
+
+  .text-industrial {
+    @apply text-muted-foreground leading-relaxed;
+  }
+
+  /* Industrial Button Variants */
+  .btn-industrial {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground shadow-industrial hover:shadow-glow transition-all duration-300 transform hover:scale-105;
+  }
+
+  .btn-steel {
+    @apply bg-steel text-white hover:bg-steel-light shadow-steel transition-all duration-300;
+  }
+
+  /* Industrial Cards */
+  .card-industrial {
+    @apply bg-card border border-border/50 backdrop-blur-sm shadow-lg hover:shadow-industrial transition-all duration-300;
+  }
+
+  /* Hero Section */
+  .hero-industrial {
+    background: linear-gradient(var(--gradient-hero)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="industrial" patternUnits="userSpaceOnUse" width="20" height="20"><rect width="20" height="20" fill="%23000000" fill-opacity="0.1"/><circle cx="10" cy="10" r="2" fill="%23ffffff" fill-opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23industrial)"/></svg>');
+    @apply bg-cover bg-center bg-no-repeat;
+  }
+
+  /* Navigation Enhancements */
+  .nav-industrial {
+    @apply backdrop-blur-md bg-background/80 border-b border-border/50;
+  }
+}

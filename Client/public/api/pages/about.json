@@ -1,0 +1,60 @@
+{
+  "slug": "about",
+  "showSection": true,
+  "intro": {
+    "kicker": "We are Kalimata Group",
+    "headline": "Transforming With Innovations"
+  },
+  "stats": [
+    { "value": 40, "label": "Years of Experience", "showPlus": true },
+    { "value": 2, "label": "Foundry Units Built", "showPlus": false },
+    { "value": 4, "label": "Forging Units Built", "showPlus": false }
+  ],
+  "features": [
+    {
+      "id": "well-maintained",
+      "title": "Well Maintained",
+      "icon": "🔧",
+      "fullDescription": "Our facilities undergo rigorous maintenance schedules to ensure optimal performance. Dedicated teams handle equipment maintenance, quality control systems, and environmental compliance. Preventive maintenance programs reduce downtime and ensure consistent product quality across batches.",
+      "image": {
+        "url": "/assets/maintenance.jpg",
+        "alt": "Maintenance team working on foundry equipment",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "industrial-specialist",
+      "title": "Industrial Specialist",
+      "icon": "⚙️",
+      "fullDescription": "With over 25 years of combined experience, our team consists of metallurgists, process engineers, and industrial specialists serving automotive, aerospace, and heavy machinery sectors. We follow ISO-certified processes and deliver solutions tailored to strict industry tolerances.",
+      "image": {
+        "url": "/assets/specialist.jpg",
+        "alt": "Industrial specialist inspecting metal components",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "id": "latest-equipment",
+      "title": "Latest Equipment",
+      "icon": "🏭",
+      "fullDescription": "We deploy computer-controlled furnaces, robotic pouring systems, 3D sand printing, and AI-powered inspection systems. This results in high-precision castings with tolerances down to ±0.1mm and excellent surface finish for critical components.",
+      "image": {
+        "url": "/assets/equipment.jpg",
+        "alt": "Modern foundry equipment and robotic pouring system",
+        "width": 1600,
+        "height": 900
+      }
+    }
+  ],
+  "seo": {
+    "metaTitle": "About — Kalimata Group",
+    "metaDescription": "Kalimata Group — industry-leading foundry and forging solutions. Learn about our experience, facilities, and advanced manufacturing capabilities.",
+    "ogImage": {
+      "url": "/assets/og-about.jpg",
+      "alt": "Kalimata Group facilities overview"
+    }
+  },
+  "lastUpdated": "2025-11-07T00:00:00.000Z"
+}
