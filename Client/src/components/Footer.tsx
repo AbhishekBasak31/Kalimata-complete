@@ -260,16 +260,16 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
           setCategories(buildFallbackCategories());
           setError((prev) => prev ?? "Failed to load categories — using fallback.");
         }
-      } catch (err: any) {
-        if (err && (err.name === "AbortError" || err === "AbortError")) {
-          // ignore abort
-        } else {
-          console.error("Error while fetching footer/categories:", err);
-          setError((prev) => prev ?? "Failed to load footer data — using fallback content.");
-          setMeta(null);
-          setAddresses([]);
-          setCategories(buildFallbackCategories());
-        }
+      // } catch (err: any) {
+      //   if (err && (err.name === "AbortError" || err === "AbortError")) {
+      //     // ignore abort
+      //   } else {
+      //     console.error("Error while fetching footer/categories:", err);
+      //     setError((prev) => prev ?? "Failed to load footer data — using fallback content.");
+      //     setMeta(null);
+      //     setAddresses([]);
+      //     setCategories(buildFallbackCategories());
+      //   }
       } catch (err: any) {
         if (err.name === "AbortError") return;
         console.error("Error while fetching footer/categories:", err);
