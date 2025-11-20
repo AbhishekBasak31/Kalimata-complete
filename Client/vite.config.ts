@@ -6,20 +6,28 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "localhost", // For local dev, `localhost` is typically sufficient
+    host: "localhost",
     port: 8086,
+    // Proxy all /api requests to your backend (port 5245)
+    proxy: {
+      "/api": {
+        target: "http://localhost:5245",
+        changeOrigin: true,
+        secure: false,
+        // rewrite: (path) => path.replace(/^\/api/, "/api"), // not needed here
+      },
+    },
   },
   plugins: [
-    react(), // Vite plugin for React (SWC)
-    mode === "development" && componentTagger(), // Only use `componentTagger` in development mode
+    react(),
+    mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"), // Path alias for `src`
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   build: {
-    // Add optimization for video files (in case Vite isn't processing them correctly)
-    assetsInlineLimit: 4096, // Increase if needed for larger videos
+    assetsInlineLimit: 4096,
   },
 }));

@@ -13,10 +13,6 @@ const requireFieldsForCreate = (body) => {
   const missing = [];
   if (!norm(body.labels)) missing.push("labels");
   if (!norm(body.Value)) missing.push("Value");
-  if (!norm(body.Mstone)) missing.push("Mstone");
-  if (!norm(body.Year)) missing.push("Year");
-  if (!norm(body.Title)) missing.push("Title");
-  if (!norm(body.Desc)) missing.push("Desc");
   return missing;
 };
 
@@ -28,10 +24,6 @@ export const createHomeGrowth = async (req, res) => {
     const payload = {
       labels: norm(req.body.labels),
       Value: norm(req.body.Value),
-      Mstone: norm(req.body.Mstone),
-      Year: norm(req.body.Year),
-      Title: norm(req.body.Title),
-      Desc: norm(req.body.Desc),
     };
 
     const missing = requireFieldsForCreate(req.body);
@@ -79,6 +71,7 @@ export const getHomeGrowth = async (req, res) => {
       return res.status(200).json({ success: true, data: doc });
     }
 
+    // latest support when route ends with /latest
     if (req.path && req.path.endsWith("/latest")) {
       const latest = await HomeGrowth.findOne({}).sort({ createdAt: -1 });
       if (!latest) return res.status(404).json({ success: false, message: "No HomeGrowth found" });
@@ -115,16 +108,16 @@ export const updateHomeGrowth = async (req, res) => {
     }
 
     const setPayload = {};
-    const fields = ["labels","Value","Mstone","Year","Title","Desc"];
-    for (const k of fields) {
-      if (typeof req.body[k] !== "undefined") {
-        const v = norm(req.body[k]);
-        if (!v) {
-          if (session.inTransaction()) await session.abortTransaction();
-          return res.status(400).json({ success: false, message: `${k} cannot be empty` });
-        }
-        setPayload[k] = v;
-      }
+    // Only these two fields are part of the model now
+    if (typeof req.body.labels !== "undefined") {
+      const v = norm(req.body.labels);
+      if (!v) { if (session.inTransaction()) await session.abortTransaction(); return res.status(400).json({ success: false, message: "labels cannot be empty" }); }
+      setPayload.labels = v;
+    }
+    if (typeof req.body.Value !== "undefined") {
+      const v = norm(req.body.Value);
+      if (!v) { if (session.inTransaction()) await session.abortTransaction(); return res.status(400).json({ success: false, message: "Value cannot be empty" }); }
+      setPayload.Value = v;
     }
 
     if (Object.keys(setPayload).length === 0) {

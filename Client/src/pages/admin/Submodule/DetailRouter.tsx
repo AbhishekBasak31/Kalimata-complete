@@ -10,7 +10,17 @@ import ContactDetails from "./Global/ContactDetails";
 import CatagoryDetails from "./Product/Catagory";
 import SubcatagoryDetails from "./Product/Subcatagory";
 import ProductDetails from "./Product/Product";
-
+import BlogDetails from "./Blog/Blog";
+import OurValueDetails from "./Blog/OurValue";
+import BDirectorDetails from "./Aboutus/BDirector";
+import CProfileDetails from "./Aboutus/CProfile";
+import CSRDetails from "./Aboutus/CSR";
+import MAndVDetails from "./Aboutus/MAndV";
+import HomeAboutDetails from "./Home/HomeAbout"
+import HomeBannerDetails from "./Home/HomeBanner";
+import HomeDirectorDetails from "./Home/HomeDirector";
+import HomeGrowthDetails from "./Home/HomeGrowth";
+import HomeMilestoneDetails from "./Home/HomeMilestone";
 
 const COMPONENT_MAP: Record<string, React.ReactNode> = {
  
@@ -20,7 +30,17 @@ const COMPONENT_MAP: Record<string, React.ReactNode> = {
   catagory:<CatagoryDetails/>,
   subcatagory:<SubcatagoryDetails/>,
   product:<ProductDetails/>,
-
+  blog:<BlogDetails/>,
+  ourvalue:<OurValueDetails/>,
+  bdirector:<BDirectorDetails/>,
+  cprofile:<CProfileDetails/>,
+  csr:<CSRDetails/>,
+  mandv:<MAndVDetails/>,
+  habout:<HomeAboutDetails/>,
+  hbanner:<HomeBannerDetails/>,
+  hdirector:<HomeDirectorDetails/>,
+  hgrowth:<HomeGrowthDetails/>,
+  hmilestone:<HomeMilestoneDetails/>
 };
 
 const DetailsRouter: React.FC = () => {

@@ -14,25 +14,7 @@ const HomeGrowthSchema = new SCHEMA(
       required: true,
      
    },
-    Mstone:{
-        type: String,
-      required: true,
-     
-   },
-    Year:{
-        type: String,
-      required: true,
-     
-   },
-   Title:{
-        type: String,
-        required: true,
-   },
-    Desc:{
-        type: String,
-      required: true,
-     
-   },  
+   
   },
   { timestamps: true }
 );

@@ -1,3 +1,4 @@
+// src/components/AboutSection.tsx
 import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import {
@@ -12,6 +13,8 @@ import { motion } from "framer-motion";
 import maintenanceImg from "@/assets/maintenance.jpg";
 import specialistImg from "@/assets/specialist.jpg";
 import equipmentImg from "@/assets/equipment.jpg";
+
+import { homeAboutApi } from "../Backend"; // adjust path if needed
 
 // Updated Counter component with leading zero
 const Counter = ({
@@ -45,7 +48,7 @@ const Counter = ({
   }, [target, startCounting]);
 
   // Pad single-digit numbers
-  const displayCount = count < 10 ? `0${count}` : count;
+  const displayCount = count < 10 ? `0${count}` : `${count}`;
 
   return <span>{displayCount}</span>;
 };
@@ -53,19 +56,22 @@ const Counter = ({
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [startCounting, setStartCounting] = useState(false);
-  const [selectedFeature, setSelectedFeature] = useState<null | typeof features[0]>(null);
+  const [selectedFeature, setSelectedFeature] = useState<null | {
+    title: string;
+    fullDescription: string;
+    icon?: string;
+    image?: string;
+  }>(null);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [homeAbout, setHomeAbout] = useState<any | null>(null);
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const counterRef = useRef<HTMLDivElement | null>(null);
 
-  // Updated stats (removed Industries Served)
-  const stats = [
-    { value: 40, label: "Years of Experience", showPlus: true },
-    { value: 2, label: "Foundry Units Built", showPlus: false },
-    { value: 4, label: "Forging Units Built", showPlus: false },
-  ];
-
-  const features = [
+  // Local fallback content in case backend missing fields
+  const FALLBACK_FEATURES = [
     {
       title: "Well Maintained",
       fullDescription:
@@ -115,6 +121,91 @@ const AboutSection = () => {
     return () => counterObserver.disconnect();
   }, []);
 
+  // Fetch latest homeAbout from backend
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        let res;
+        // try a /latest endpoint if present, else getAll
+        try {
+          res = await homeAboutApi.getLatest();
+        } catch {
+          res = await homeAboutApi.getAll();
+        }
+        const data = res?.data?.data ?? res?.data ?? [];
+        // Data can be array or single object
+        let latest = null;
+        if (Array.isArray(data)) {
+          latest = data.length ? data[0] : null;
+        } else {
+          latest = data;
+        }
+        if (mounted) setHomeAbout(latest ?? null);
+      } catch (err: any) {
+        console.error("fetch homeAbout error:", err);
+        if (mounted) setError(err?.response?.data?.message ?? err?.message ?? "Failed to load data");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Build stats and features from backend or fallbacks
+  const stats = (() => {
+    // default fallbacks
+    const defaults = [
+      { value: 40, label: "Years of Experience", showPlus: true },
+      { value: 2, label: "Foundry Units Built", showPlus: false },
+      { value: 4, label: "Forging Units Built", showPlus: false },
+    ];
+
+    if (!homeAbout) return defaults;
+
+    const n1 = parseInt(String(homeAbout.Num1 || "").replace(/\D/g, ""), 10) || 0;
+    const n2 = parseInt(String(homeAbout.Num2 || "").replace(/\D/g, ""), 10) || 0;
+    const n3 = parseInt(String(homeAbout.Num3 || "").replace(/\D/g, ""), 10) || 0;
+
+    return [
+      { value: n1 || defaults[0].value, label: homeAbout.Htext1 || defaults[0].label, showPlus: true },
+      { value: n2 || defaults[1].value, label: homeAbout.Htext2 || defaults[1].label, showPlus: false },
+      { value: n3 || defaults[2].value, label: homeAbout.Htext3 || defaults[2].label, showPlus: false },
+    ];
+  })();
+
+  const features = (() => {
+    if (!homeAbout) {
+      return FALLBACK_FEATURES;
+    }
+
+    const f1 = {
+      title: homeAbout.Htext1 ?? FALLBACK_FEATURES[0].title,
+      fullDescription: homeAbout.Dtext1 ?? FALLBACK_FEATURES[0].fullDescription,
+      icon: "🔧",
+      image: homeAbout.Img1 ?? FALLBACK_FEATURES[0].image,
+    };
+    const f2 = {
+      title: homeAbout.Htext2 ?? FALLBACK_FEATURES[1].title,
+      fullDescription: homeAbout.Dtext2 ?? FALLBACK_FEATURES[1].fullDescription,
+      icon: "⚙️",
+      image: homeAbout.Img2 ?? FALLBACK_FEATURES[1].image,
+    };
+    const f3 = {
+      title: homeAbout.Htext3 ?? FALLBACK_FEATURES[2].title,
+      fullDescription: homeAbout.Dtext3 ?? FALLBACK_FEATURES[2].fullDescription,
+      icon: "🏭",
+      image: homeAbout.Img3 ?? FALLBACK_FEATURES[2].image,
+    };
+
+    return [f1, f2, f3];
+  })();
+
   return (
     <section
       ref={sectionRef}
@@ -140,6 +231,17 @@ const AboutSection = () => {
           >
             Transforming With <span className="text-primary">Innovations</span>
           </motion.h2>
+          {/* optional subtitle from backend (use Dtext1 as short subtitle if provided) */}
+          {homeAbout?.Dtext1 && (
+            <motion.p
+              className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base"
+              initial={{ opacity: 0, y: 10 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              {homeAbout.Dtext1}
+            </motion.p>
+          )}
         </div>
 
         {/* Stats */}
@@ -195,10 +297,7 @@ const AboutSection = () => {
         </div>
 
         {/* Feature Detail Popup */}
-        <Dialog
-          open={!!selectedFeature}
-          onOpenChange={() => setSelectedFeature(null)}
-        >
+        <Dialog open={!!selectedFeature} onOpenChange={() => setSelectedFeature(null)}>
           <DialogContent className="max-w-2xl p-0 rounded-xl overflow-hidden shadow-xl">
             {selectedFeature && (
               <div className="relative w-full h-64 md:h-80">
@@ -231,6 +330,10 @@ const AboutSection = () => {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Loading / Error indicators */}
+        {loading && <div className="mt-6 text-center text-gray-600">Loading...</div>}
+        {error && <div className="mt-6 text-center text-red-600">Error: {error}</div>}
       </div>
     </section>
   );

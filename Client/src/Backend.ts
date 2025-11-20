@@ -204,4 +204,188 @@ export const productApi = {
   delete: (id: string): Promise<ApiResponse<any>> => api.delete(`${PRODUCT_BASE}/${id}`),
 };
 
+const BLOG_BASE = "/api/v1/blog";
+
+export const blogApi = {
+  create: (formData: FormData): Promise<ApiResponse<any>> =>
+    api.post(BLOG_BASE, formData, { headers: { "Content-Type": "multipart/form-data" } }),
+
+  getAll: (): Promise<ApiResponse<any>> => api.get(BLOG_BASE),
+
+  getById: (id: string): Promise<ApiResponse<any>> => api.get(`${BLOG_BASE}/${id}`),
+
+  update: (id: string, formData: FormData): Promise<ApiResponse<any>> =>
+    api.patch(`${BLOG_BASE}/${id}`, formData, { headers: { "Content-Type": "multipart/form-data" } }),
+
+  delete: (id: string): Promise<ApiResponse<any>> => api.delete(`${BLOG_BASE}/${id}`),
+};
+
+const OURVALUE_BASE = "/api/v1/blog/ourvalue";
+
+export const ourvalueApi = {
+  create: (payload: Record<string, any>): Promise<ApiResponse<any>> =>
+    api.post(OURVALUE_BASE, payload, { headers: { "Content-Type": "application/json" } }),
+
+  getAll: (): Promise<ApiResponse<any>> => api.get(OURVALUE_BASE),
+
+  getById: (id: string): Promise<ApiResponse<any>> => api.get(`${OURVALUE_BASE}/${id}`),
+
+  update: (id: string, payload: Record<string, any>): Promise<ApiResponse<any>> =>
+    api.patch(`${OURVALUE_BASE}/${id}`, payload, { headers: { "Content-Type": "application/json" } }),
+
+  delete: (id: string): Promise<ApiResponse<any>> => api.delete(`${OURVALUE_BASE}/${id}`),
+};
+
+
+
+const BDIRECTORS_BASE = "/api/v1/about/bdirector";
+
+export const bdirectorApi = {
+  create: (form: FormData): Promise<ApiResponse<any>> =>
+    api.post(BDIRECTORS_BASE , form, { headers: { "Content-Type": "multipart/form-data" } }),
+
+  getAll: (): Promise<ApiResponse<any>> => api.get(BDIRECTORS_BASE),
+  getById: (id: string): Promise<ApiResponse<any>> => api.get(`${BDIRECTORS_BASE}/${id}`),
+
+ 
+
+  update: (id: string, form: FormData): Promise<ApiResponse<any>> =>
+    api.patch(`${BDIRECTORS_BASE}/${id}`, form, { headers: { "Content-Type": "multipart/form-data" } }),
+
+  delete: (id: string): Promise<ApiResponse<any>> => api.delete(`${BDIRECTORS_BASE}/${id}`),
+};
+
+
+const CPROFILE_BASE = "/api/v1/about/cprofile";
+
+export const cprofileApi = {
+  create: (form: FormData): Promise<ApiResponse<any>> =>
+    api.post(CPROFILE_BASE + "/", form, { headers: { "Content-Type": "multipart/form-data" } }),
+
+  getAll: (): Promise<ApiResponse<any>> => api.get(CPROFILE_BASE),
+
+  getLatest: (): Promise<ApiResponse<any>> => api.get(CPROFILE_BASE + "/latest"),
+
+  getById: (id: string): Promise<ApiResponse<any>> => api.get(`${CPROFILE_BASE}/${id}`),
+
+  update: (id: string, form: FormData): Promise<ApiResponse<any>> =>
+    api.patch(`${CPROFILE_BASE}/${id}`, form, { headers: { "Content-Type": "multipart/form-data" } }),
+
+  delete: (id: string): Promise<ApiResponse<any>> => api.delete(`${CPROFILE_BASE}/${id}`),
+};
+const CSR_BASE = "/api/v1/about/csr";
+export const csrApi = {
+  create: (form) => api.post(CSR_BASE + "/", form, { headers: { "Content-Type": "multipart/form-data" } }),
+  getAll: () => api.get(CSR_BASE),
+  getById: (id) => api.get(`${CSR_BASE}/${id}`),
+  update: (id, form) => api.patch(`${CSR_BASE}/${id}`, form, { headers: { "Content-Type": "multipart/form-data" } }),
+  delete: (id) => api.delete(`${CSR_BASE}/${id}`),
+};
+
+const MANDV_BASE = "/api/v1/about/mandv";
+
+export const mAndVApi = {
+  create: (form: FormData) => api.post(`${MANDV_BASE}/`, form, { headers: { "Content-Type": "multipart/form-data" } }),
+  getAll: () => api.get(MANDV_BASE),
+  getById: (id: string) => api.get(`${MANDV_BASE}/${id}`),
+  update: (id: string, form: FormData) => api.patch(`${MANDV_BASE}/${id}`, form, { headers: { "Content-Type": "multipart/form-data" } }),
+  delete: (id: string) => api.delete(`${MANDV_BASE}/${id}`),
+};
+
+const HOMEABOUT_BASE = "/api/v1/home/about";
+
+export const homeAboutApi = {
+  create: (form: FormData) => api.post(HOMEABOUT_BASE + "/", form, { headers: { "Content-Type": "multipart/form-data" } }),
+  getAll: () => api.get(HOMEABOUT_BASE),
+  getById: (id: string) => api.get(`${HOMEABOUT_BASE}/${id}`),
+  getLatest: () => api.get(HOMEABOUT_BASE + "/latest"),
+  update: (id: string, form: FormData) => api.patch(`${HOMEABOUT_BASE}/${id}`, form, { headers: { "Content-Type": "multipart/form-data" } }),
+  delete: (id: string) => api.delete(`${HOMEABOUT_BASE}/${id}`),
+};
+
+
+const HOMEBANNER_BASE = "/api/v1/home/banner";
+
+export const homeBannerApi = {
+  create: (form: FormData) => api.post(HOMEBANNER_BASE + "/", form, { headers: { "Content-Type": "multipart/form-data" } }),
+  getAll: () => api.get(HOMEBANNER_BASE + "/"),
+  getLatest: () => api.get(HOMEBANNER_BASE + "/latest"),
+  getById: (id: string) => api.get(`${HOMEBANNER_BASE}/${id}`),
+  update: (id: string, form: FormData) => api.patch(`${HOMEBANNER_BASE}/${id}`, form, { headers: { "Content-Type": "multipart/form-data" } }),
+  delete: (id: string) => api.delete(`${HOMEBANNER_BASE}/${id}`),
+};
+
+
+// src/Backend/homeDirectorApi.ts
+// Add this to your Backend exports (adjust path when importing elsewhere)
+
+const HOME_DIRECTOR_BASE = "/api/v1/home/director";
+
+export const homeDirectorApi = {
+ 
+  create: (form: FormData) =>
+    api.post(HOME_DIRECTOR_BASE, form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  getAll: ()=> api.get(HOME_DIRECTOR_BASE),
+  getById: (id: string) =>
+    api.get(`${HOME_DIRECTOR_BASE}/${id}`),
+
+  update: (id: string, form: FormData) =>
+    api.patch(`${HOME_DIRECTOR_BASE}/${id}`, form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  delete: (id: string) =>
+    api.delete(`${HOME_DIRECTOR_BASE}/${id}`),
+};
+const HOME_GROWTH_BASE = "/api/v1/home/growth";
+
+export const homeGrowthApi = {
+  /**
+   * Create a HomeGrowth entry.
+   * payload should be a plain object with string fields:
+   * { labels, Value, Mstone, Year, Title, Desc }
+   */
+  create: (payload: Record<string, string>) =>
+    api.post(HOME_GROWTH_BASE, payload),
+
+  /** Get all entries */
+  getAll: () =>
+    api.get(HOME_GROWTH_BASE),
+
+  /** Get by id */
+  getById: (id: string) =>
+    api.get(`${HOME_GROWTH_BASE}/${id}`),
+
+  /** Get latest (controller supports path ending with /latest) */
+  getLatest: () =>
+    api.get(`${HOME_GROWTH_BASE}/latest`),
+
+  /**
+   * Update (patch) an entry.
+   * payload: partial object with any of the fields: labels, Value, Mstone, Year, Title, Desc
+   */
+  update: (id: string, payload: Record<string, string>) =>
+    api.patch(`${HOME_GROWTH_BASE}/${id}`, payload),
+
+  /** Delete an entry */
+  delete: (id: string) =>
+    api.delete(`${HOME_GROWTH_BASE}/${id}`),
+};
+const HOME_MILESTONE_BASE = "/api/v1/home/milestone";
+
+export const homeMilestoneApi = {
+  create: (form: FormData) =>
+    api.post(HOME_MILESTONE_BASE, form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  getAll: () => api.get(HOME_MILESTONE_BASE),
+  getById: (id: string) => api.get(`${HOME_MILESTONE_BASE}/${id}`),
+  update: (id: string, form: FormData) =>
+    api.patch(`${HOME_MILESTONE_BASE}/${id}`, form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  delete: (id: string) => api.delete(`${HOME_MILESTONE_BASE}/${id}`),
+};
+
 export default api;

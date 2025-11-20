@@ -1,3 +1,4 @@
+// src/components/GrowthGraph.tsx
 import React, { useEffect, useRef, useState } from "react";
 import {
   Chart as ChartJS,
@@ -15,6 +16,7 @@ import {
   Chart
 } from "chart.js";
 import { Chart as ReactChart } from "react-chartjs-2";
+import { homeGrowthApi } from "../Backend"; // <-- adjust this path to your Backend export
 
 ChartJS.register(
   CategoryScale,
@@ -28,11 +30,27 @@ ChartJS.register(
   Filler
 );
 
+const DEMO_RAW = [
+  { label: "2016–2017", value: -17.14 },
+  { label: "2017–2018", value: 49.49 },
+  { label: "2018–2019", value: 53.50 },
+  { label: "2019–2020", value: 14.16 },
+  { label: "2020–2021", value: -9.61 },
+  { label: "2021–2022", value: 59.28 },
+  { label: "2022–2023", value: 3.33 },
+  { label: "2023–2024", value: 17.78 },
+  { label: "2024–2025", value: 8.90 },
+];
+
 const GrowthGraph: React.FC = () => {
   const divRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<Chart<"bar" | "line", number[], unknown> | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [renderKey, setRenderKey] = useState(0);
+
+  const [raw, setRaw] = useState<{ label: string; value: number }[]>(DEMO_RAW);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,23 +70,56 @@ const GrowthGraph: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // --- Fixed data provided ---
-// ✅ REVERSED DATA ORDER
-const raw = [
-  { label: "2016–2017", value: -17.14 },
-  { label: "2017–2018", value: 49.49 },
-  { label: "2018–2019", value: 53.50 },
-  { label: "2019–2020", value: 14.16 },
-  { label: "2020–2021", value: -9.61 },
-  { label: "2021–2022", value: 59.28 },
-  { label: "2022–2023", value: 3.33 },
-  { label: "2023–2024", value: 17.78 },
-  { label: "2024–2025", value: 8.90 },
-];
+  useEffect(() => {
+    let mounted = true;
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await homeGrowthApi.getAll();
+        // backend returns { success: true, data: [ ... ] }
+        const arr = res?.data?.data ?? res?.data ?? [];
+        if (!mounted) return;
 
-const labels = raw.map((r) => r.label);
-const dataPoints = raw.map((r) => r.value);
+        if (Array.isArray(arr) && arr.length > 0) {
+          // Map array -> { label, value } ensuring numeric parsing
+          // Sort chronologically by createdAt ascending (old -> new)
+          const sorted = arr
+            .slice()
+            .sort((a: any, b: any) => {
+              const ta = new Date(a.createdAt || 0).getTime();
+              const tb = new Date(b.createdAt || 0).getTime();
+              return ta - tb;
+            })
+            .map((it: any) => {
+              const label = String(it.labels ?? it.label ?? it.Label ?? "").trim();
+              const rawVal = it.Value ?? it.value ?? it.Value;
+              // parse number safely
+              const value = Number(String(rawVal ?? "").replace(/,/g, "")) || 0;
+              return { label: label || "—", value };
+            });
 
+          setRaw(sorted);
+        } else {
+          // fallback to demo
+          setRaw(DEMO_RAW);
+        }
+      } catch (err: any) {
+        console.error("fetch growth data error:", err);
+        setError(err?.response?.data?.message ?? err?.message ?? "Failed to load growth data");
+        setRaw(DEMO_RAW);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    fetchData();
+    return () => { mounted = false; };
+  }, []);
+
+  // derive datasets & config from raw
+  const labels = raw.map((r) => r.label);
+  const dataPoints = raw.map((r) => r.value);
 
   const primaryColor = "#f97316"; // tailwind orange-500
   const negativeColor = "#ef4444"; // tailwind red-500
@@ -77,7 +128,7 @@ const dataPoints = raw.map((r) => r.value);
 
   const maxVal = Math.max(...dataPoints, 0);
   const minVal = Math.min(...dataPoints, 0);
-  const pad = 5; // % padding on y-axis
+  const pad = Math.max(5, Math.round((Math.abs(maxVal - minVal) || 10) * 0.12)); // smart padding
 
   const data: { labels: string[]; datasets: ChartDataset<"bar" | "line", number[]>[] } = {
     labels,
@@ -87,8 +138,8 @@ const dataPoints = raw.map((r) => r.value);
         label: "Growth",
         data: dataPoints,
         backgroundColor: barColors,
-        borderRadius: 4,
-        barPercentage: 0.6,
+        borderRadius: 6,
+        barPercentage: 0.64,
       },
       {
         type: "line",
@@ -97,7 +148,7 @@ const dataPoints = raw.map((r) => r.value);
         borderColor: primaryColor,
         backgroundColor: primaryColor + "33",
         fill: true,
-        tension: 0.4,
+        tension: 0.36,
         pointRadius: 4,
         pointBackgroundColor: "#fff",
         pointBorderColor: primaryColor,
@@ -112,14 +163,14 @@ const dataPoints = raw.map((r) => r.value);
     maintainAspectRatio: true,
     animation: isVisible
       ? {
-          duration: 2000,
+          duration: 1400,
           easing: "easeOutQuart",
           delay: (context) => {
-            if (context.type === "data" && context.dataset.type === "bar") {
-              return context.dataIndex * 120;
+            if (context.type === "data" && (context.dataset as any).type === "bar") {
+              return context.dataIndex * 90;
             }
-            if (context.type === "data" && context.dataset.type === "line") {
-              return 120 * dataPoints.length + context.dataIndex * 40;
+            if (context.type === "data" && (context.dataset as any).type === "line") {
+              return 90 * dataPoints.length + context.dataIndex * 24;
             }
             return 0;
           },
@@ -132,8 +183,8 @@ const dataPoints = raw.map((r) => r.value);
         border: { color: "#00000022" },
       },
       y: {
-        min: Math.floor((Math.min(minVal, 0) - pad) * 1) / 1,
-        max: Math.ceil((Math.max(maxVal, 0) + pad) * 1) / 1,
+        min: Math.floor(Math.min(minVal, 0) - pad),
+        max: Math.ceil(Math.max(maxVal, 0) + pad),
         grid: { display: false },
         ticks: {
           color: "#1f2937",
@@ -166,9 +217,9 @@ const dataPoints = raw.map((r) => r.value);
 
   return (
     <section className="w-full mx-auto py-6 md:py-8 px-4 bg-gray-100 text-gray-900">
-      {/* Header — matches AboutSection text design */}
+      {/* Header */}
       <div
-        className={`text-center mb-12 md:mb-16 transition-all duration-1000 ${
+        className={`text-center mb-12 md:mb-16 transition-all duration-700 ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
@@ -183,24 +234,27 @@ const dataPoints = raw.map((r) => r.value);
 
       <div
         ref={divRef}
-        className={`w-full flex justify-center transition-opacity duration-1000 ${
+        className={`w-full flex flex-col items-center transition-opacity duration-700 ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="w-full md:w-4/5 lg:w-3/5">
-          <div
-            key={renderKey}
-            className="bg-gray-100 rounded-2xl p-4 transition-all duration-500"
-            style={{ aspectRatio: "2 / 1" }}
-          >
-            <ReactChart
-              ref={chartRef}
-              type="bar"
-              data={data}
-              options={options}
-            />
+        {loading ? (
+          <div className="py-12 text-gray-600">Loading chart…</div>
+        ) : error ? (
+          <div className="py-8 text-red-600">{error}</div>
+        ) : raw.length === 0 ? (
+          <div className="py-8 text-gray-600">No growth data available.</div>
+        ) : (
+          <div className="w-full md:w-4/5 lg:w-3/5">
+            <div
+              key={renderKey}
+              className="bg-gray-100 rounded-2xl p-4 transition-all duration-500"
+              style={{ aspectRatio: "2 / 1" }}
+            >
+              <ReactChart ref={chartRef} type="bar" data={data} options={options} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

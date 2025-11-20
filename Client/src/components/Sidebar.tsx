@@ -13,6 +13,17 @@ const Sidebar = () => {
     { name: "Catagory", path: "/admin/details/catagory" },
     { name: "SubCatagory", path: "/admin/details/subcatagory" },
     { name: "Product", path: "/admin/details/product" },
+    { name: "Blog", path: "/admin/details/blog" },
+    { name: "OurValue", path: "/admin/details/ourvalue" },
+    { name: "BDirectors", path: "/admin/details/bdirector" },
+    { name: "CProfile", path: "/admin/details/cprofile" },
+    { name: "CSR", path: "/admin/details/csr" },
+    { name: "MAndV", path: "/admin/details/mandv" },
+    { name: "HomeAbout", path: "/admin/details/habout" },
+    { name: "HomeBanner", path: "/admin/details/hbanner" },
+    { name: "HomeDirector", path: "/admin/details/hdirector" },
+    { name: "Homegrowth", path: "/admin/details/hgrowth" },
+    { name: "Homemilestone", path: "/admin/details/hmilestone" },
 
 
 
@@ -23,7 +34,7 @@ const Sidebar = () => {
 
     <div style={{
         background: "linear-gradient(90deg, #F7FFF7 0%, #E8FDE8 35%, #E6FFEF 100%)",
-      }} className="my-32 w-64  text-green-800 h-screen p-5 fixed left-0 top-0 flex flex-col">
+      }} className="mt-10  w-64  text-green-800 h-[95vh] p-5 fixed left-0 top-0 flex flex-col ">
       <h2 className="text-2xl font-bold mb-6 text-green-400 text-center">
         Admin Panel
       </h2>

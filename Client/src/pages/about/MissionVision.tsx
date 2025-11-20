@@ -1,14 +1,79 @@
+// src/components/MissionVision.tsx
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import missionImg from "@/assets/company1.jpg"; // replace with your mission image
-import visionImg from "@/assets/company3.jpg"; // replace with your vision image
+import missionImg from "@/assets/company1.jpg"; // local fallback
+import visionImg from "@/assets/company3.jpg"; // local fallback
+import { mAndVApi } from "../../Backend"; // adjust path to your Backend export
 
-const MissionVision = () => {
+type MAndVItem = {
+  _id: string;
+  Img1?: string;
+  Htext1?: string;
+  Dtext1?: string;
+  Img2?: string;
+  Htext2?: string;
+  Dtext2?: string;
+  createdAt?: string;
+};
+
+const MissionVision: React.FC = () => {
+  const [item, setItem] = useState<MAndVItem | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   // Colors for background animated shapes/lines
   const shapeColors = [
     "rgba(255,255,255,0.1)",
     "rgba(255,255,255,0.15)",
     "rgba(255,255,255,0.08)",
   ];
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await mAndVApi.getAll();
+        // backend returns { success: true, data: [...] } or raw array
+        const data = res?.data?.data ?? res?.data ?? [];
+        if (!Array.isArray(data) || data.length === 0) {
+          if (mounted) setItem(null);
+        } else {
+          // choose newest by createdAt
+          const sorted = data.slice().sort((a: MAndVItem, b: MAndVItem) => {
+            const ta = new Date(a.createdAt || 0).getTime();
+            const tb = new Date(b.createdAt || 0).getTime();
+            return tb - ta;
+          });
+          if (mounted) setItem(sorted[0] ?? null);
+        }
+      } catch (err: any) {
+        console.error("mAndV fetch error:", err);
+        if (mounted) setError(err?.response?.data?.message ?? err?.message ?? "Failed to load Mission & Vision");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // pick images: backend first, else fallback
+  const img1 = item?.Img1 || missionImg;
+  const img2 = item?.Img2 || visionImg;
+
+  const htext1 = item?.Htext1 || "Our Mission";
+  const dtext1 =
+    item?.Dtext1 ||
+    "Our mission is to provide innovative, high-quality casting and manufacturing solutions that empower industries worldwide. We are committed to delivering exceptional value by combining advanced technology, meticulous craftsmanship, and sustainable practices.";
+
+  const htext2 = item?.Htext2 || "Our Vision";
+  const dtext2 =
+    item?.Dtext2 ||
+    "Our vision is to become a global leader in foundry and engineering solutions by consistently fostering innovation, sustainability, and operational excellence.";
 
   return (
     <section className="relative bg-gray-900 py-24 overflow-hidden">
@@ -33,7 +98,7 @@ const MissionVision = () => {
           }}
           transition={{
             repeat: Infinity,
-            duration: 4 + Math.random() * 2, // faster animation
+            duration: 4 + Math.random() * 2,
             ease: "easeInOut",
           }}
         />
@@ -51,9 +116,16 @@ const MissionVision = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-white font-[Oswald]">
             Mission & <span className="text-primary">Vision</span>
           </h1>
-          <p className="mt-4 text-gray-300 max-w-2xl mx-auto text-base md:text-lg">
-            Driving innovation, sustainability, and excellence in every solution we provide.
-          </p>
+
+          {loading ? (
+            <p className="mt-4 text-gray-300 max-w-2xl mx-auto text-base md:text-lg">Loading Mission & Vision…</p>
+          ) : error ? (
+            <p className="mt-4 text-red-400 max-w-2xl mx-auto text-base md:text-lg">{error}</p>
+          ) : (
+            <p className="mt-4 text-gray-300 max-w-2xl mx-auto text-base md:text-lg">
+              {item ? item.Htext1 || item.Htext2 || "Driving innovation, sustainability, and excellence in every solution we provide." : "Driving innovation, sustainability, and excellence in every solution we provide."}
+            </p>
+          )}
         </motion.div>
 
         {/* Mission Section */}
@@ -73,11 +145,7 @@ const MissionVision = () => {
               transition={{ duration: 0.8 }}
               className="h-96 md:h-full rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(255,255,255,0.6)]"
             >
-              <img
-                src={missionImg}
-                alt="Mission"
-                className="w-full h-full object-cover rounded-3xl"
-              />
+              <img src={img1} alt={htext1} className="w-full h-full object-cover rounded-3xl" />
             </motion.div>
           </div>
 
@@ -90,14 +158,8 @@ const MissionVision = () => {
               transition={{ duration: 0.8 }}
               className="bg-gray-800 rounded-3xl p-8 md:p-12 shadow-lg relative z-10"
             >
-              <h2 className="text-2xl font-semibold text-white mb-4">Our Mission</h2>
-              <p className="text-gray-300 leading-relaxed">
-                Our mission is to provide innovative, high-quality casting and manufacturing solutions that empower industries worldwide. 
-                We are committed to delivering exceptional value by combining advanced technology, meticulous craftsmanship, and sustainable practices. 
-                Every project is approached with integrity, precision, and dedication to customer satisfaction, ensuring long-term partnerships and mutual growth. 
-                Beyond products, we focus on fostering knowledge sharing, enhancing operational efficiency, and continuously improving our processes to exceed expectations.
-                Through this holistic approach, we aim to enable industries to thrive while contributing to a sustainable and responsible future.
-              </p>
+              <h2 className="text-2xl font-semibold text-white mb-4">{htext1}</h2>
+              <p className="text-gray-300 leading-relaxed">{dtext1}</p>
             </motion.div>
           </div>
         </motion.div>
@@ -119,13 +181,8 @@ const MissionVision = () => {
               transition={{ duration: 0.8 }}
               className="bg-gray-800 rounded-3xl p-8 md:p-12 shadow-lg relative z-10"
             >
-              <h2 className="text-2xl font-semibold text-white mb-4">Our Vision</h2>
-              <p className="text-gray-300 leading-relaxed">
-                Our vision is to become a global leader in foundry and engineering solutions by consistently fostering innovation, sustainability, and operational excellence. 
-                We strive to create advanced, reliable, and eco-conscious solutions that elevate industry standards and empower our clients to achieve long-term success. 
-                By integrating technology, quality management, and ethical practices, we aim to shape a future where our contributions positively impact communities, employees, and stakeholders alike. 
-                We envision a company that not only excels in manufacturing but also inspires others through commitment to sustainability, social responsibility, and continuous growth.
-              </p>
+              <h2 className="text-2xl font-semibold text-white mb-4">{htext2}</h2>
+              <p className="text-gray-300 leading-relaxed">{dtext2}</p>
             </motion.div>
           </div>
 
@@ -138,11 +195,7 @@ const MissionVision = () => {
               transition={{ duration: 0.8 }}
               className="h-96 md:h-full rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(255,255,255,0.6)]"
             >
-              <img
-                src={visionImg}
-                alt="Vision"
-                className="w-full h-full object-cover rounded-3xl"
-              />
+              <img src={img2} alt={htext2} className="w-full h-full object-cover rounded-3xl" />
             </motion.div>
           </div>
         </motion.div>

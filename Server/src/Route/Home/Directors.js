@@ -25,9 +25,9 @@ HomeDirectorRouter.get("/", getHomeDirector);
 HomeDirectorRouter.get("/:id", getHomeDirector);
 
 // Update (optional video replacement)
-HomeDirectorRouter.patch("/update/:id", authenticate, uploadMiddleware, updateHomeDirector);
+HomeDirectorRouter.patch("/:id", authenticate, uploadMiddleware, updateHomeDirector);
 
 // Delete
-HomeDirectorRouter.delete("/delete/:id", authenticate, deleteHomeDirector);
+HomeDirectorRouter.delete("/:id", authenticate, deleteHomeDirector);
 
 export default HomeDirectorRouter;
