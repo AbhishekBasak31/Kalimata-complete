@@ -1,10 +1,15 @@
 // Footer.tsx
 import React, { useEffect, useState } from "react";
-import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import logoImg from "@/assets/logo.png";
-import { footerApi } from "../Backend"; // <- uses your footerApi exported in lib/api.ts
-// import { api } from "@/lib/api"; // optional if you prefer direct axios calls for categories
 
 // local/static fallback data (kept as a fallback)
 import { categories as staticCategories } from "@/data/category";
@@ -94,23 +99,36 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
 
   useEffect(() => {
     let mounted = true;
-    setLoading(true);
-    setError(null);
+    const controller = new AbortController();
 
-    const fetchAll = async () => {
+    async function fetchFooterAndCategories() {
+      setLoading(true);
+      setError(null);
+
       try {
-        // Use footerApi for footer; use api for categories (so both use same axios instance)
-        const footerPromise = footerApi.getLatest();
-        const catPromise = api.get("/api/v1/product/catagory");
+        // fetch footer (getLatest) and categories in parallel
+        const [footerRes, catRes] = await Promise.allSettled([
+          fetch("/api/v1/footer/", { signal: controller.signal }), // returns { success: true, data: { ... } }
+          fetch("/api/v1/product/catagory", { signal: controller.signal }), // returns { success: true, data: [...] }
+        ]);
 
-        const [footerRes, catRes] = await Promise.allSettled([footerPromise, catPromise]);
-
-        // FOOTER handling
+        // FOOTER
         if (footerRes.status === "fulfilled") {
-          try {
-            const j = footerRes.value.data;
-            if (mounted && j && j.success && j.data) {
+          const resp = footerRes.value;
+          // check text first to avoid JSON parse error if HTML returned
+          const txt = await resp.text();
+          if (!mounted) return;
+          if (!txt || txt.trim().startsWith("<")) {
+            // Received HTML (index.html or error) -> fallback
+            console.error("Footer endpoint returned HTML/text instead of JSON:", txt.slice(0, 400));
+            setError("Failed to load footer data — using fallback content.");
+            setMeta(null);
+            setAddresses([]);
+          } else {
+            const j = JSON.parse(txt);
+            if (j && j.success && j.data) {
               const d = j.data;
+              // Map social links from your schema (SocialLink1..7)
               const social = {
                 facebook: d.SocialLink1 || null,
                 instagram: d.SocialLink2 || null,
@@ -130,6 +148,7 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
 
               setMeta(siteMeta);
 
+              // Use factoryaddress from footer record if present
               if (Array.isArray(d.factoryaddress) && d.factoryaddress.length) {
                 const mapped = d.factoryaddress.map((fa: any) => ({
                   title: fa.Htext || "Factory",
@@ -141,52 +160,52 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
                 setAddresses([]);
               }
             } else {
-              // not the expected shape
-              if (mounted) {
-                console.warn("Footer API returned unexpected shape; using fallback.");
-                setMeta(null);
-                setAddresses([]);
-                setError("Footer API returned unexpected data; using fallback.");
-              }
-            }
-          } catch (parseErr) {
-            console.error("Error parsing footer response", parseErr);
-            if (mounted) {
+              // backend returned something unexpected
+              console.error("Footer API responded but missing data:", j);
+              setError("Footer API responded unexpectedly; using fallback.");
               setMeta(null);
               setAddresses([]);
-              setError("Failed to parse footer response; using fallback.");
             }
           }
         } else {
-          console.error("Footer API fetch failed:", footerRes.reason);
-          if (mounted) {
-            setMeta(null);
-            setAddresses([]);
-            setError("Failed to load footer data — using fallback content.");
-          }
+          // rejected footer fetch
+          console.error("Footer fetch error:", footerRes.reason);
+          setError("Failed to load footer data — using fallback content.");
+          setMeta(null);
+          setAddresses([]);
         }
 
-        // CATEGORIES handling
+        // CATEGORIES
         if (catRes.status === "fulfilled") {
-          try {
-            const j = catRes.value.data;
-            if (mounted && j && j.success && Array.isArray(j.data)) {
+          const resp = catRes.value;
+          const txt = await resp.text();
+          if (!mounted) return;
+          if (!txt || txt.trim().startsWith("<")) {
+            console.warn("Category endpoint returned HTML/text; using fallback categories.");
+            setCategories(buildFallbackCategories());
+          } else {
+            const j = JSON.parse(txt);
+            if (j && j.success && Array.isArray(j.data)) {
+              // Normalize categories. The Catagory schema seems to use Name, Img, KeyP*, etc.
               const cats = (j.data as any[]).map((c) => ({
                 id: c._id || c.id,
-                name: c.Name || c.name || c.Title || "Unnamed",
+                name: c.Name || c.name || c.Name,
                 slug: c.slug || (c.Name || c.name || "").toLowerCase().replace(/\s+/g, "-"),
-                subCategories: Array.isArray(c.subCategories)
-                  ? c.subCategories.map((s: any) => ({
-                      id: s._id || s.id,
-                      name: s.Name || s.name || "Unnamed",
-                      slug: s.slug || s.id || (s.Name || s.name || "").toLowerCase().replace(/\s+/g, "-"),
-                    }))
-                  : [],
+                subCategories:
+                  // if backend provides nested subcategories, use them, else empty and fallback to static mapping
+                  (c.subCategories && Array.isArray(c.subCategories)
+                    ? c.subCategories.map((s: any) => ({
+                        id: s._id || s.id,
+                        name: s.Name || s.name || s.SubcatName || "Unnamed",
+                        slug: s.slug || s.id || (s.Name || s.name || "").toLowerCase().replace(/\s+/g, "-"),
+                      }))
+                    : []),
               })) as Category[];
 
-              // if backend didn't send subCategories attach static ones by id match
+              // If there are no subCategories on backend, try to build from staticSubcategories matching some id/name
               const catsWithSubs = cats.map((cat) => {
                 if (cat.subCategories && cat.subCategories.length) return cat;
+                // try to find matching static subcategories by category name or id
                 const staticSubs = staticSubcategories
                   .filter((s: any) => s.categoryId === (cat.id || cat.slug))
                   .map((s: any) => ({
@@ -202,31 +221,28 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
               console.warn("Category API returned unexpected shape, using fallback.");
               setCategories(buildFallbackCategories());
             }
-          } catch (parseErr) {
-            console.error("Error parsing category response", parseErr);
-            if (mounted) setCategories(buildFallbackCategories());
           }
         } else {
           console.error("Category fetch error:", catRes.reason);
-          if (mounted) setCategories(buildFallbackCategories());
-        }
-      } catch (err: any) {
-        console.error("Error while fetching footer/categories:", err);
-        if (mounted) {
-          setError("Failed to load footer data — using fallback content.");
-          setMeta(null);
-          setAddresses([]);
           setCategories(buildFallbackCategories());
         }
+      } catch (err: any) {
+        if (err.name === "AbortError") return;
+        console.error("Error while fetching footer/categories:", err);
+        setError("Failed to load footer data — using fallback content.");
+        setMeta(null);
+        setAddresses([]);
+        setCategories(buildFallbackCategories());
       } finally {
         if (mounted) setLoading(false);
       }
-    };
+    }
 
-    fetchAll();
+    fetchFooterAndCategories();
 
     return () => {
       mounted = false;
+      controller.abort();
     };
   }, []);
 
@@ -264,8 +280,18 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
 
             {/* Social Icons (external) */}
             <div className="flex gap-2 mt-3">
-              {[{ Icon: Facebook, href: socials.facebook }, { Icon: Instagram, href: socials.instagram }, { Icon: Linkedin, href: socials.linkedin }].map(({ Icon, href }) => (
-                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center hover:bg-primary/30 transition-colors">
+              {[
+                { Icon: Facebook, href: socials.facebook },
+                { Icon: Instagram, href: socials.instagram },
+                { Icon: Linkedin, href: socials.linkedin },
+              ].map(({ Icon, href }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center hover:bg-primary/30 transition-colors"
+                >
                   <Icon className="h-3.5 w-3.5 text-primary" />
                 </a>
               ))}
@@ -279,8 +305,22 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
           <div>
             <h4 className="font-semibold italic mb-3 text-lg text-white">Quick Links</h4>
             <nav className="space-y-1.5">
-              {[{ name: "Home", path: "/" }, { name: "Products", path: "/products" }, { name: "Blog", path: "/blog" }, { name: "Company Profile", path: "/about/company-profile" }, { name: "Board of Directors", path: "/about/board-of-directors" }, { name: "CSR", path: "/about/csr" }, { name: "Mission & Vision", path: "/about/mission-vision" }, { name: "Careers", path: "/careers" }, { name: "Contact", path: "/contact" }].map((link) => (
-                <button key={link.path} onClick={() => handleLinkClick(link.path)} className="block text-gray-300 hover:text-primary transition-colors text-left w-full text-sm">
+              {[
+                { name: "Home", path: "/" },
+                { name: "Products", path: "/products" },
+                { name: "Blog", path: "/blog" },
+                { name: "Company Profile", path: "/about/company-profile" },
+                { name: "Board of Directors", path: "/about/board-of-directors" },
+                { name: "CSR", path: "/about/csr" },
+                { name: "Mission & Vision", path: "/about/mission-vision" },
+                { name: "Careers", path: "/careers" },
+                { name: "Contact", path: "/contact" },
+              ].map((link) => (
+                <button
+                  key={link.path}
+                  onClick={() => handleLinkClick(link.path)}
+                  className="block text-gray-300 hover:text-primary transition-colors text-left w-full text-sm"
+                >
                   {link.name}
                 </button>
               ))}
@@ -293,14 +333,21 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
             <nav className="space-y-2">
               {categories.map((category) => (
                 <div key={category.slug}>
-                  <button onClick={() => handleCategoryClick(category.slug)} className="block text-gray-300 hover:text-primary transition-colors text-left text-sm">
+                  <button
+                    onClick={() => handleCategoryClick(category.slug)}
+                    className="block text-gray-300 hover:text-primary transition-colors text-left text-sm"
+                  >
                     {category.name}
                   </button>
 
                   {category.subCategories && category.subCategories.length > 0 && (
                     <div className="mt-1 space-y-1">
                       {category.subCategories!.map((sub) => (
-                        <button key={sub.slug} onClick={() => handleSubCategoryClick(category.slug, sub.slug)} className="block text-gray-400 hover:text-primary transition-colors text-left text-xs">
+                        <button
+                          key={sub.slug}
+                          onClick={() => handleSubCategoryClick(category.slug, sub.slug)}
+                          className="block text-gray-400 hover:text-primary transition-colors text-left text-xs"
+                        >
                           {sub.name}
                         </button>
                       ))}
@@ -340,7 +387,12 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
               <div className="flex items-start gap-2">
                 <MapPin className="h-3.5 w-3.5 text-primary flex-shrink-0 mt-0.5" />
                 <div>
-                  <a href="https://www.google.com/maps/place/Kalimata+Vyapaar+Private+Limited,+Kolkata+700001,+West+Bengal" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                  <a
+                    href="https://www.google.com/maps/place/Kalimata+Vyapaar+Private+Limited,+Kolkata+700001,+West+Bengal"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors"
+                  >
                     {meta?.address || "Industrial Area, Kolkata"}
                   </a>
                   <p className="text-gray-400 text-xs">West Bengal, India</p>
@@ -355,62 +407,62 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
       <div className="bg-steel-dark/90 border-t border-steel-light/20">
         <div className="container mx-auto px-6 py-12 text-gray-300">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 text-xs leading-relaxed">
-            {addresses.length > 0 ? (
-              addresses.map((a, idx) => (
-                <div key={idx}>
-                  <h5 className="text-primary font-semibold mb-3">{a.title}</h5>
-                  <a href={a.mapsUrl || "#"} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
-                    <span dangerouslySetInnerHTML={{ __html: (a.address || "").replace(/\n/g, "<br/>") }} />
-                  </a>
-                </div>
-              ))
-            ) : (
-              <>
-                {/* fallback static factory addresses */}
-                <div>
-                  <h5 className="text-primary font-semibold mb-3">Registered Office</h5>
-                  <a href="https://maps.app.goo.gl/hBJ3go9bdEHLUjDb8" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
-                    Kalimata Group of Companies <br />
-                    14/2 Old China Bazar Street, 3rd Floor, Room No. 213,
-                    Kolkata-700001, West Bengal
-                  </a>
-                </div>
+            {addresses.length > 0
+              ? addresses.map((a, idx) => (
+                  <div key={idx}>
+                    <h5 className="text-primary font-semibold mb-3">{a.title}</h5>
+                    <a href={a.mapsUrl || "#"} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
+                      <span dangerouslySetInnerHTML={{ __html: (a.address || "").replace(/\n/g, "<br/>") }} />
+                    </a>
+                  </div>
+                ))
+              : (
+                <>
+                  {/* fallback static addresses */}
+                  <div>
+                    <h5 className="text-primary font-semibold mb-3">Registered Office</h5>
+                    <a href="https://maps.app.goo.gl/hBJ3go9bdEHLUjDb8" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
+                      Kalimata Group of Companies <br />
+                      14/2 Old China Bazar Street, 3rd Floor, Room No. 213,
+                      Kolkata-700001, West Bengal
+                    </a>
+                  </div>
 
-                <div>
-                  <h5 className="text-primary font-semibold mb-3">Head Office</h5>
-                  <a href="https://maps.app.goo.gl/TL8MMM4t6ts4Jp9u6" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
-                    Kalimata Ispat Private Limited <br />
-                    P.S Srijan Corporate Park, Unit No: 9, 13th Floor, Tower-1,
-                    Plot-G2, Block-GP, Sector-V, Salt Lake, Kolkata-700091, West
-                    Bengal
-                  </a>
-                </div>
+                  <div>
+                    <h5 className="text-primary font-semibold mb-3">Head Office</h5>
+                    <a href="https://maps.app.goo.gl/TL8MMM4t6ts4Jp9u6" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
+                      Kalimata Ispat Private Limited <br />
+                      P.S Srijan Corporate Park, Unit No: 9, 13th Floor, Tower-1,
+                      Plot-G2, Block-GP, Sector-V, Salt Lake, Kolkata-700091, West
+                      Bengal
+                    </a>
+                  </div>
 
-                <div>
-                  <h5 className="text-primary font-semibold mb-3">Factory 1</h5>
-                  <a href="https://maps.app.goo.gl/a1349ECwNgex2WeW7" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
-                    Kalimata Ispat Industries Private Limited <br />
-                    Andul Road, Chunavati More, PO - Podrah, PS - Sankrail, Dist - Howrah, West Bengal - 711109.
-                  </a>
-                </div>
+                  <div>
+                    <h5 className="text-primary font-semibold mb-3">Factory 1</h5>
+                    <a href="https://maps.app.goo.gl/a1349ECwNgex2WeW7" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
+                      Kalimata Ispat Industries Private Limited <br />
+                      Andul Road, Chunavati More, PO - Podrah, PS - Sankrail, Dist - Howrah, West Bengal - 711109.
+                    </a>
+                  </div>
 
-                <div>
-                  <h5 className="text-primary font-semibold mb-3">Factory 2</h5>
-                  <a href="https://maps.app.goo.gl/KBK5cMUqnZD5EASHA" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
-                    Kalimata Ispat Industries Private Limited <br />
-                    1/98, Bidhan Road,vill-Sahebdihi, District-Bankura, P.S-Barjora, P.O- Hatasuria S.O,West Bengal-722204
-                  </a>
-                </div>
+                  <div>
+                    <h5 className="text-primary font-semibold mb-3">Factory 2</h5>
+                    <a href="https://maps.app.goo.gl/KBK5cMUqnZD5EASHA" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
+                      Kalimata Ispat Industries Private Limited <br />
+                      1/98, Bidhan Road,vill-Sahebdihi, District-Bankura, P.S-Barjora, P.O- Hatasuria S.O,West Bengal-722204
+                    </a>
+                  </div>
 
-                <div>
-                  <h5 className="text-primary font-semibold mb-3">Factory 3</h5>
-                  <a href="https://maps.app.goo.gl/KBK5cMUqnZD5EASHA" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
-                    Kalimata Vyapaar Private Limited <br />
-                    1/98, Bidhan Road,vill-Sahebdihi, District-Bankura, P.S-Barjora, P.O- Hatasuria S.O,West Bengal-722204
-                  </a>
-                </div>
-              </>
-            )}
+                  <div>
+                    <h5 className="text-primary font-semibold mb-3">Factory 3</h5>
+                    <a href="https://maps.app.goo.gl/KBK5cMUqnZD5EASHA" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors block">
+                      Kalimata Vyapaar Private Limited <br />
+                      1/98, Bidhan Road,vill-Sahebdihi, District-Bankura, P.S-Barjora, P.O- Hatasuria S.O,West Bengal-722204
+                    </a>
+                  </div>
+                </>
+              )}
           </div>
         </div>
       </div>
