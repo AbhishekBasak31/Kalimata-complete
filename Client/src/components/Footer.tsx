@@ -124,6 +124,7 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
             const j = await footerRes.json();
             if (j && j.success && j.data) {
               const d = j.data;
+              // Map social links from your schema (SocialLink1..7)
               const social = {
                 facebook: d.SocialLink1 || null,
                 instagram: d.SocialLink2 || null,
@@ -143,6 +144,7 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
 
               setMeta(siteMeta);
 
+              // Use factoryaddress from footer record if present
               if (Array.isArray(d.factoryaddress) && d.factoryaddress.length) {
                 const mapped = d.factoryaddress.map((fa: any) => ({
                   title: fa.Htext || "Factory",
@@ -268,6 +270,13 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
           setAddresses([]);
           setCategories(buildFallbackCategories());
         }
+      } catch (err: any) {
+        if (err.name === "AbortError") return;
+        console.error("Error while fetching footer/categories:", err);
+        setError("Failed to load footer data — using fallback content.");
+        setMeta(null);
+        setAddresses([]);
+        setCategories(buildFallbackCategories());
       } finally {
         if (mounted) setLoading(false);
       }
@@ -317,7 +326,6 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
             {/* Social Icons (external) */}
             <div className="flex gap-2 mt-3">
               {[
-
                 { Icon: Facebook, href: socials.facebook },
                 { Icon: Instagram, href: socials.instagram },
                 { Icon: Linkedin, href: socials.linkedin },
@@ -343,7 +351,6 @@ const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
             <h4 className="font-semibold italic mb-3 text-lg text-white">Quick Links</h4>
             <nav className="space-y-1.5">
               {[
-
                 { name: "Home", path: "/" },
                 { name: "Products", path: "/products" },
                 { name: "Blog", path: "/blog" },
