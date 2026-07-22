@@ -24,10 +24,6 @@ const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(String(id));
 
 /**
  * CREATE / UPSERT
- * - Will upsert a single Footer document (replace/create).
- * - IMPORTANT: factoryaddress is NOT required or validated here. It is expected
- *   to be created/inserted later by your factoryaddress controller (which should
- *   call Footer update to attach the factoryaddress id).
  */
 export const createFooter = async (req, res) => {
   try {
@@ -43,9 +39,7 @@ export const createFooter = async (req, res) => {
       contactno: norm(req.body.contactno),
       mailId: norm(req.body.mailId),
       address: norm(req.body.address),
-      factoryaddress:[]
-      // NOTE: intentionally DO NOT set payload.factoryaddress here even if provided.
-      // The factoryaddress will be inserted later by the factoryaddress controller.
+      factoryaddress: [],
     };
 
     const missing = requireFieldsForCreate(req.body);
@@ -59,7 +53,7 @@ export const createFooter = async (req, res) => {
     const updated = await Footer.findOneAndUpdate(
       {},
       { $set: payload },
-      { new: true, upsert: true, runValidators: true }
+      { new: true, upsert: true, runValidators: false }
     ).populate("factoryaddress");
 
     return res
@@ -79,10 +73,8 @@ export const createFooter = async (req, res) => {
 
 /**
  * UPDATE - partial allowed. PATCH /update/:id
- * - Uses transaction/session.
- * - Validates factoryaddress if provided (does NOT create it).
- *   This allows your factoryaddress controller to attach the created factoryaddress id
- *   to the existing footer by calling this update endpoint (or by updating the model directly).
+ * Contact fields (contactno, mailId, address) are optional.
+ * Sending an empty string clears the field from the database.
  */
 export const updateFooter = async (req, res) => {
   const session = await mongoose.startSession();
@@ -105,6 +97,7 @@ export const updateFooter = async (req, res) => {
     }
 
     const setPayload = {};
+    const unsetPayload = {};
 
     // required links — if provided they cannot be empty
     for (let i = 1; i <= 4; i++) {
@@ -137,7 +130,7 @@ export const updateFooter = async (req, res) => {
       }
     }
 
-    // other fields
+    // copyrightText — required, cannot be cleared
     if (typeof req.body.copyrightText !== "undefined") {
       const v = norm(req.body.copyrightText);
       if (!v) {
@@ -148,32 +141,22 @@ export const updateFooter = async (req, res) => {
       }
       setPayload.copyrightText = v;
     }
+
+    // contact fields — optional, empty string = clear the field ($unset)
     if (typeof req.body.contactno !== "undefined") {
       const v = norm(req.body.contactno);
-      if (!v) {
-        await session.abortTransaction();
-        return res.status(400).json({ success: false, message: "contactno cannot be empty" });
-      }
-      setPayload.contactno = v;
+      if (v) { setPayload.contactno = v; } else { unsetPayload.contactno = 1; }
     }
     if (typeof req.body.mailId !== "undefined") {
       const v = norm(req.body.mailId);
-      if (!v) {
-        await session.abortTransaction();
-        return res.status(400).json({ success: false, message: "mailId cannot be empty" });
-      }
-      setPayload.mailId = v;
+      if (v) { setPayload.mailId = v; } else { unsetPayload.mailId = 1; }
     }
     if (typeof req.body.address !== "undefined") {
       const v = norm(req.body.address);
-      if (!v) {
-        await session.abortTransaction();
-        return res.status(400).json({ success: false, message: "address cannot be empty" });
-      }
-      setPayload.address = v;
+      if (v) { setPayload.address = v; } else { unsetPayload.address = 1; }
     }
 
-    // factoryaddress update: only accept existing id (we do NOT create it here)
+    // factoryaddress update: only accept existing id
     if (typeof req.body.factoryaddress !== "undefined") {
       const faId = norm(req.body.factoryaddress);
       if (!faId) {
@@ -197,15 +180,19 @@ export const updateFooter = async (req, res) => {
       setPayload.factoryaddress = faId;
     }
 
-    if (Object.keys(setPayload).length === 0) {
+    if (Object.keys(setPayload).length === 0 && Object.keys(unsetPayload).length === 0) {
       await session.abortTransaction();
       return res.status(400).json({ success: false, message: "No fields provided to update" });
     }
 
+    const updateDoc = {};
+    if (Object.keys(setPayload).length) updateDoc.$set = setPayload;
+    if (Object.keys(unsetPayload).length) updateDoc.$unset = unsetPayload;
+
     const updated = await Footer.findByIdAndUpdate(
       id,
-      { $set: setPayload },
-      { new: true, runValidators: true, session }
+      updateDoc,
+      { new: true, runValidators: false, session }
     ).populate("factoryaddress");
 
     await session.commitTransaction();
@@ -227,8 +214,6 @@ export const updateFooter = async (req, res) => {
 
 /**
  * GET - by id or latest
- * - GET /:id  => get by id
- * - GET /     => get latest
  */
 export const getFooter = async (req, res) => {
   try {
